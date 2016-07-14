@@ -52,13 +52,16 @@ func getIntervals(source string) {
 func getLimits(source string) {
 	files, _ := ioutil.ReadDir(source)
 	outlet, _ := os.Create(source + "clock.csv")
-	// analysis := sst.BeginGlobalClock()
+	analysis := sst.BeginGlobalClock()
 	defer outlet.Close()
 
 	for _, file := range files {
 		if sst.ValidFile(file.Name()) {
-			where := source + file.Name()
-			fmt.Printf("%#v\n\n\n\n", sst.ExtractGlobalClock(where))			
+			xml := sst.ExtractGlobalClock(source + file.Name())
+			analysis = sst.UpdateGlobalClock(analysis, file.Name(), xml)
 		}
 	}
+
+	// TODO complete analysis by adding the test's final moment
+	fmt.Printf("%#v\n", analysis)
 }
