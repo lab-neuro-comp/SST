@@ -63,7 +63,11 @@ func getMonth(inlet int) time.Month {
 }
 
 func getHour(timestamp string) (int, int, int) {
-    return 0, 0, 0
+    raw := strings.Split(strings.Split(timestamp, "T")[1], ":")
+    hour, _ := strconv.ParseInt(raw[0], 0, 0)
+    min, _ := strconv.ParseInt(raw[1], 0, 0)
+    sec, _ := strconv.ParseInt(raw[2][0:len(raw[2])-1], 0, 0)
+    return int(hour), int(min), int(sec)
 }
 
 /* CODE IS POETRY */
