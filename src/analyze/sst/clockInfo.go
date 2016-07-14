@@ -17,13 +17,15 @@ func ConvertToUnixTime(timestamp string) int {
 }
 
 func ConvertToTimeStamp(unixtime int) string {
-    // TODO Convert unix t
-    return fmt.Sprintf("%#v", unixtime)
+    moment := time.Unix(int64(unixtime), 0)
+    parts := strings.Split(moment.String(), " ")
+    return fmt.Sprintf("%sT%sZ", parts[0], parts[1])
 }
 
 /*********************
 * AUXILIAR FUNCTIONS *
 *********************/
+// to unixtime
 func getDate(timestamp string) (int, time.Month, int)  {
     raw := strings.Split(strings.Split(timestamp, "T")[0], "-")
     year, _ := strconv.ParseInt(raw[0], 10, 0)
@@ -69,5 +71,8 @@ func getHour(timestamp string) (int, int, int) {
     sec, _ := strconv.ParseInt(raw[2][0:len(raw[2])-1], 0, 0)
     return int(hour), int(min), int(sec)
 }
+
+// to timestamp
+
 
 /* CODE IS POETRY */
