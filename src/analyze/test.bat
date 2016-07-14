@@ -1,1 +1,0 @@
-go run regex.go sst/sst-1-1.xml

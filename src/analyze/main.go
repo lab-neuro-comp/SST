@@ -13,6 +13,7 @@ func main() {
 	source += "/"
 	calculateData(source)
 	getIntervals(source)
+	getLimits(source)
 }
 
 func calculateData(source string) {
@@ -46,4 +47,18 @@ func getIntervals(source string) {
 		}
 	}
 	sst.Write(outlet, sst.FormatClock(analysis))
+}
+
+func getLimits(source string) {
+	files, _ := ioutil.ReadDir(source)
+	outlet, _ := os.Create(source + "clock.csv")
+	// analysis := sst.BeginGlobalClock()
+	defer outlet.Close()
+
+	for _, file := range files {
+		if sst.ValidFile(file.Name()) {
+			where := source + file.Name()
+			fmt.Printf("%#v\n\n\n\n", sst.ExtractGlobalClock(where))			
+		}
+	}
 }
