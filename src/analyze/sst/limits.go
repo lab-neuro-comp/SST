@@ -43,7 +43,7 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
 	for fileName, beginning := range clockInfo {
 		intervals := intervalsInfo[fileName]
 		testLength := int(intervals[len(intervals)-1])
-		beginningTimeStamp := ConvertToTimeStamp(beginning)
+		beginningTimeStamp := ConvertToUnixTime(beginning)
 		endingTimeStamp := beginningTimeStamp + testLength + 3
 		outlet[fileName] = []int { beginningTimeStamp, endingTimeStamp }
 	}
