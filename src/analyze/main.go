@@ -42,8 +42,9 @@ func getIntervals(source string) {
 
 	for _, file := range files {
 		if sst.ValidFile(file.Name()) {
-			analysis = sst.UpdateClock(sst.ExtractIntervals(source + file.Name()),
-		                               file.Name(), analysis)
+			analysis = sst.UpdateClock(analysis,
+				                       file.Name(),
+			                           sst.ExtractIntervals(source + file.Name()))
 		}
 	}
 	sst.Write(outlet, sst.FormatClock(analysis))
@@ -52,16 +53,20 @@ func getIntervals(source string) {
 func getLimits(source string) {
 	files, _ := ioutil.ReadDir(source)
 	outlet, _ := os.Create(source + "clock.csv")
-	analysis := sst.BeginGlobalClock()
+	clockInfo := sst.BeginGlobalClock()
+	intervalsInfo := sst.BeginClock()
 	defer outlet.Close()
 
 	for _, file := range files {
 		if sst.ValidFile(file.Name()) {
-			xml := sst.ExtractGlobalClock(source + file.Name())
-			analysis = sst.UpdateGlobalClock(analysis, file.Name(), xml)
+			where := source + file.Name()
+			xml := sst.ExtractGlobalClock(where)
+			intervals := sst.ExtractIntervals(where)
+			intervalsInfo = sst.UpdateClock(intervalsInfo, file.Name(), intervals)
+			clockInfo = sst.UpdateGlobalClock(clockInfo, file.Name(), xml)
 		}
 	}
 
-	// TODO complete analysis by adding the test's final moment
-	fmt.Printf("%#v\n", analysis)
+	results := sst.MergeData(clockInfo, intervalsInfo)
+	fmt.Printf("%#v\n", results)
 }

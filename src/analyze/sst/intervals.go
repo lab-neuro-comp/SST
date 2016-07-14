@@ -51,9 +51,9 @@ func ExtractIntervals(input string) []float64 {
  * @param analysis the analysis structure, as given by BeginClock()
  * @return the updated analysis structure
  */
-func UpdateClock(data []float64,
+func UpdateClock(analysis map[string][]float64,
                  tag string,
-                 analysis map[string][]float64) map[string][]float64 {
+                 data []float64) map[string][]float64 {
     analysis[tag] = data
     return analysis
 }

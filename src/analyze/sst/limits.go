@@ -31,11 +31,30 @@ func ExtractGlobalClock(input string) string {
     return xml[lower:upper]
 }
 
-func UpdateGlobalClock(analysis map[string]string, 
+func UpdateGlobalClock(analysis map[string]string,
 	                   input, data string) map[string]string {
 	analysis[input] = data
 	return analysis
 }
+
+func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) map[string][]int {
+	outlet := make(map[string][]int)
+
+	for fileName, beginning := range clockInfo {
+		intervals := intervalsInfo[fileName]
+		testLength := int(intervals[len(intervals)-1])
+		beginningTimeStamp := ConvertToTimeStamp(beginning)
+		endingTimeStamp := beginningTimeStamp + testLength + 3
+		outlet[fileName] = []int { beginningTimeStamp, endingTimeStamp }
+	}
+
+	return outlet
+}
+
+// wake up, skip school, turn on the atari.
+// with my console, i'm in control.
+// let my mind go, till it becomes a downfall, then turn it out loud
+// chiptune
 
 /****************
 * XML FUNCTIONS *
