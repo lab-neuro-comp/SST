@@ -62,11 +62,11 @@ func getLimits(source string) {
 			where := source + file.Name()
 			xml := sst.ExtractGlobalClock(where)
 			intervals := sst.ExtractIntervals(where)
-			intervalsInfo = sst.UpdateClock(intervalsInfo, file.Name(), intervals)
 			clockInfo = sst.UpdateGlobalClock(clockInfo, file.Name(), xml)
+			intervalsInfo = sst.UpdateClock(intervalsInfo, file.Name(), intervals)
 		}
 	}
 
 	results := sst.MergeData(clockInfo, intervalsInfo)
-	fmt.Printf("%#v\n", results)
+	sst.Write(outlet, sst.FormatGlobalClock(results))
 }
