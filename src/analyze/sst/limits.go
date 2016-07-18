@@ -43,9 +43,9 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
 
 	for fileName, beginning := range clockInfo {
 		intervals := intervalsInfo[fileName]
-		testLength := int(intervals[len(intervals)-1])
+		testLength := int(intervals[len(intervals)-1]) / 1000
 		beginningTimeStamp := ConvertToUnixTime(beginning)
-		endingTimeStamp := beginningTimeStamp + testLength + 3
+		endingTimeStamp := beginningTimeStamp + testLength + 4
 		outlet[fileName] = []int { beginningTimeStamp, endingTimeStamp }
 	}
 
@@ -53,23 +53,13 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
 }
 
 func FormatGlobalClock(data map[string][]int) string {
-	i := 0
 	outlet := ""
-	howManyFiles := len(data)
-	files := make([]string, howManyFiles)
 
-	for fileName, _ := range data {
-		outlet = fmt.Sprintf("%s%s\t", outlet, fileName)
-		files[i] = fileName
-		i++
-	}
-	outlet = fmt.Sprintf("%s\n", outlet)
-	for i = 0; i < 2; i++ {
-		for j := 0; j < howManyFiles; j++ {
-			moments := data[files[j]]
-			outlet = fmt.Sprintf("%s%s\t", outlet, ConvertToTimeStamp(moments[i]))
-		}
-		outlet = fmt.Sprintf("%s\n", outlet)
+	for fileName, moments := range data {
+		outlet = fmt.Sprintf("%s%s\t%s\t%s\n", outlet, 
+			                                   fileName,
+			                                   ConvertToTimeStamp(moments[0]),
+			                                   ConvertToTimeStamp(moments[1]))
 	}
 
 	return outlet
