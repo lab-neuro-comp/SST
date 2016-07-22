@@ -7,10 +7,21 @@ import "strings"
 /*****************
 * MAIN FUNCTIONS *
 *****************/
+/**
+ * Creates a clock limits structure
+ * @return a map relating a string (the file) to the moment
+ *         the test begins (a timestamp)
+ */
 func BeginGlobalClock() map[string]string {
 	return make(map[string]string)
 }
 
+/**
+ * Extracts the XML part of the table and mines the information in
+ * the time tag
+ * @param input the file path
+ * @return the mined timestamp
+ */
 func ExtractGlobalClock(input string) string {
     inlet, _ := os.Open(input)
     // outlet := make([]float64, 0)
@@ -32,26 +43,44 @@ func ExtractGlobalClock(input string) string {
     return xml[lower:upper]
 }
 
+/**
+ * Updates the analysis struture, relating the file to its timestamp
+ * @param analysis the analysis structure, as created by `BeginGlobalClock`
+ * @param input the file name
+ * @param data the time stamp
+ * @return the updated analysis structure
+ */
 func UpdateGlobalClock(analysis map[string]string,
 	                   input, data string) map[string]string {
 	analysis[input] = data
 	return analysis
 }
 
+/**
+ * Relates the timestamps information to the limits of the test intervals
+ */
 func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) map[string][]int {
 	outlet := make(map[string][]int)
+	threeHours := 3 * 60 * 60
 
 	for fileName, beginning := range clockInfo {
 		intervals := intervalsInfo[fileName]
-		testLength := int(intervals[len(intervals)-1]) / 1000
-		beginningTimeStamp := ConvertToUnixTime(beginning)
-		endingTimeStamp := beginningTimeStamp + testLength + 4
-		outlet[fileName] = []int { beginningTimeStamp, endingTimeStamp }
+		firstEvent := int(intervals[0]) / 1000
+		lastEvent := int(intervals[len(intervals)-1]) / 1000
+		startupTime := ConvertToUnixTime(beginning) - threeHours
+		beginningTime := startupTime + firstEvent - 1
+		endingTime := startupTime + lastEvent + 4
+		outlet[fileName] = []int { beginningTime, endingTime }
 	}
 
 	return outlet
 }
 
+/**
+ * Turns the clock data structure into a comprehensive TSV table
+ * @param data the result of a `MergeData` operation
+ * @return a string containing the related TSV table
+ */
 func FormatGlobalClock(data map[string][]int) string {
 	outlet := ""
 
