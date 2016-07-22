@@ -94,11 +94,6 @@ func FormatGlobalClock(data map[string][]int) string {
 	return outlet
 }
 
-// wake up, skip school, turn on the atari.
-// with my console, i'm in control.
-// let my mind go, till it becomes a downfall, then turn it out loud
-// chiptune
-
 /****************
 * XML FUNCTIONS *
 ****************/
