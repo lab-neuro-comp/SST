@@ -17,30 +17,29 @@ func BeginTimer() map[string]string {
 }
 
 /**
- * Extracts the XML part of the table and mines the information in
- * the time tag
+ * Extracts the XML part of the table and mines the information in the time tag'
  * @param input the file path
  * @return the mined timestamp
  */
 func ExtractTimer(input string) string {
     inlet, _ := os.Open(input)
-    // outlet := make([]float64, 0)
+    tags := getTimerTags()
 
     // read variables
     defer inlet.Close()
-    header := ReadHeader(inlet, getTimerTags())
+    header := ReadHeader(inlet, tags)
     records := ReadRecords(inlet, header)
 
     // further analysis
-    key := ""
-    for k, _ := range header {
-    	key = k
-    	break
-    }
-    xml := records[key][0]
+    xml := records["Clock.Information"][0]
     lower, upper := FindBorders(xml, "DateUtc")
 
-    return xml[lower:upper]
+    // Packing data
+    outlet := fmt.Sprintf("%s#%s#%s", 
+    	                  xml[lower:upper], 
+    	                  records["Subject"][0], 
+    	                  records["Session"][0])
+    return outlet
 }
 
 /**
@@ -50,8 +49,7 @@ func ExtractTimer(input string) string {
  * @param data the time stamp
  * @return the updated analysis structure
  */
-func UpdateTimer(analysis map[string]string,
-	                   input, data string) map[string]string {
+func UpdateTimer(analysis map[string]string, input, data string) map[string]string {
 	analysis[input] = data
 	return analysis
 }
@@ -63,14 +61,19 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
 	outlet := make(map[string][]int)
 	threeHours := 3 * 60 * 60
 
-	for fileName, beginning := range clockInfo {
+	for fileName, raw := range clockInfo {
+		data := Split(raw, '#')
+		fmt.Printf("%s %v\n", fileName, data)
+		beginning := data[0]
+		subject := ParseInt(data[1])
+		session := ParseInt(data[2])
 		intervals := intervalsInfo[fileName]
 		firstEvent := int(intervals[0]) / 1000
 		lastEvent := int(intervals[len(intervals)-1]) / 1000
 		startupTime := ConvertToUnixTime(beginning) - threeHours
 		beginningTime := startupTime + firstEvent - 1
 		endingTime := startupTime + lastEvent + 4
-		outlet[fileName] = []int { beginningTime, endingTime }
+		outlet[fileName] = []int { beginningTime, endingTime, subject, session }
 	}
 
 	return outlet
@@ -82,13 +85,16 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
  * @return a string containing the related TSV table
  */
 func FormatTimer(data map[string][]int) string {
-	outlet := ""
+	outlet := "Arquivo\tStart\tEnd\tSubject\tSession\n"
 
 	for fileName, moments := range data {
-		outlet = fmt.Sprintf("%s%s\t%s\t%s\n", outlet, 
-			                                   fileName,
-			                                   ConvertToTimeStamp(moments[0]),
-			                                   ConvertToTimeStamp(moments[1]))
+		outlet = fmt.Sprintf("%s%s\t%s\t%s\t%v\t%v\n", 
+			                 outlet, 
+			                 fileName,
+			                 ConvertToTimeStamp(moments[0]),
+			                 ConvertToTimeStamp(moments[1]),
+			                 moments[2],
+			                 moments[3])
 	}
 
 	return outlet
@@ -118,6 +124,8 @@ func FindBorders(text, tag string) (int, int) {
 func getTimerTags() []string {
     return []string {
         "Clock.Information",
+        "Subject",
+        "Session",
     }
 }
 

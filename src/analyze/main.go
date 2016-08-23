@@ -54,8 +54,8 @@ func getLimits(source string) {
 		if sst.ValidFile(file.Name()) {
 			where := source + file.Name()
 			// Clock information
-			xml := sst.ExtractTimer(where)
-			timer = sst.UpdateTimer(timer, file.Name(), xml)
+			data := sst.ExtractTimer(where)
+			timer = sst.UpdateTimer(timer, file.Name(), data)
 			// Intervals information
 			intervals := sst.ExtractIntervals(where)
 			stopwatch = sst.UpdateStopwatch(stopwatch, file.Name(), intervals)

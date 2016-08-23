@@ -61,6 +61,10 @@ func Split(inlet string, separator byte) []string {
 		}
 	}
 
+	if len(division) > 0 {
+		outlet = append(outlet, division)
+	}
+
 	return outlet
 }
 
@@ -76,6 +80,15 @@ func Contains(haystack []string, needle string) bool {
 
 func ParseFloat64(inlet string) float64 {
 	outlet, shit := strconv.ParseFloat(inlet, 64)
+	if shit == nil {
+		return outlet
+	} else {
+		return 0
+	}
+}
+
+func ParseInt(inlet string) int {
+	outlet, shit := strconv.Atoi(inlet)
 	if shit == nil {
 		return outlet
 	} else {
