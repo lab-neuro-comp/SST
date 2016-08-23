@@ -11,6 +11,8 @@ func GetNeededVariables() []string {
 		"SoundStimulus.ACC",
 		"VisualStimulus.Duration",
 		"Procedure[Trial]",
+		"Subject",
+		"Session",
 	}
 }
 
@@ -30,6 +32,8 @@ func CreateAnalysisMap() map[string]float64 {
 	result["%INHIB"] = 0
 	result["%AUS"] = 0
 	result["GENERAL"] = 0
+	result["SUBJECT"] = 0
+	result["SESSION"] = 0
 
 	return result
 }
@@ -43,6 +47,7 @@ func AnalyzeSingle(data map[string][]string) map[string]float64 {
 	result := CreateAnalysisMap()
 	limit := len(data["Procedure[Trial]"])
 
+	// Extracting data
 	for i := 0; i < limit; i++ {
 		switch data["Procedure[Trial]"][i] {
 		case "PressProc":
@@ -52,6 +57,11 @@ func AnalyzeSingle(data map[string][]string) map[string]float64 {
 		}
 	}
 
+	// Subject identification
+	result["SUBJECT"] = ParseFloat64(data["Subject"][0])
+	result["SESSION"] = ParseFloat64(data["Session"][0])
+
+	// Subject score
 	result["RT"] /= result["totalGo"]
 	result["SSD"] /= result["correctStop"]
 	result["SSRT"] = result["RT"] - result["SSD"]

@@ -15,11 +15,15 @@ func GetAnalysisParameters() []string {
 		"SSD",
 		"RT",
 		"SSRT",
+		"SUBJECT",
+		"SESSION",
 	}
 }
 
 func GetResultParameters() []string {
 	return []string {
+		"SUBJECT",
+		"SESSION",
 		"RT",
 		"SSD",
 		"SSRT",

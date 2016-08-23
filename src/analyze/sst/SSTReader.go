@@ -1,7 +1,6 @@
 package sst
 
 import "os"
-// import "fmt"
 
 /**
  * Reads the choosen file and translates it into a collection of arrays
