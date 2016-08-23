@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 import "os"
-import "./sst"
 import "io/ioutil"
+import "./sst"
 
 func main() {
 	source := "."
@@ -12,10 +12,13 @@ func main() {
 	}
 	source += "/"
 	calculateData(source)
-	getIntervals(source)
 	getLimits(source)
 }
 
+/**
+ * Studies the score obtained by that file set
+ * @param source the source folder path
+ */
 func calculateData(source string) {
 	files, _ := ioutil.ReadDir(source)
 	outlet, _ := os.Create(source + "sst.csv")
@@ -34,28 +37,18 @@ func calculateData(source string) {
 	sst.Write(outlet, sst.FormatMultipleCSV(analysis))
 }
 
-func getIntervals(source string) {
-	files, _ := ioutil.ReadDir(source)
-	outlet, _ := os.Create(source + "intervals.csv")
-	analysis := sst.BeginClock()
-	defer outlet.Close()
-
-	for _, file := range files {
-		if sst.ValidFile(file.Name()) {
-			analysis = sst.UpdateClock(analysis,
-				                       file.Name(),
-			                           sst.ExtractIntervals(source + file.Name()))
-		}
-	}
-	sst.Write(outlet, sst.FormatClock(analysis))
-}
-
+/**
+ * Analyzes the time performance of a data set
+ * @param source the source folder path
+ */
 func getLimits(source string) {
 	files, _ := ioutil.ReadDir(source)
-	outlet, _ := os.Create(source + "clock.csv")
+	outClock, _ := os.Create(source + "clock.csv")
+	outInt, _ := os.Create(source + "intervals.csv")
 	clockInfo := sst.BeginGlobalClock()
 	intervalsInfo := sst.BeginClock()
-	defer outlet.Close()
+	defer outClock.Close()
+	defer outInt.Close()
 
 	for _, file := range files {
 		if sst.ValidFile(file.Name()) {
@@ -68,5 +61,6 @@ func getLimits(source string) {
 	}
 
 	results := sst.MergeData(clockInfo, intervalsInfo)
-	sst.Write(outlet, sst.FormatGlobalClock(results))
+	sst.Write(outClock, sst.FormatGlobalClock(results))
+	sst.Write(outInt, sst.FormatClock(intervalsInfo))
 }
