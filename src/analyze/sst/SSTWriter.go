@@ -32,8 +32,7 @@ func GetResultParameters() []string {
 /**
  * <p> Generates an analysis structure. Consists of a map relating a parameter
  *     to an array of numbers. The needed parameters can be obtained through the
- *     "GetAnalysisParameters() string" function.
- * </p>
+ *     "GetAnalysisParameters() string" function. </p>
  * @return the analysis structure
  */
 func BeginAnalysis() map[string][]float64 {
@@ -134,9 +133,9 @@ func BeginCSV() string {
 }
 
 /**
- * <p>Formats the output of an analysis structure to the CSV format.
- *    It assumes there is a file name so this string can be
- *    be concatenated to its end. </p>
+ * <p> Formats the output of an analysis structure to the CSV format.
+ *     It assumes there is a file name so this string can be
+ *     be concatenated to its end. </p>
  * @param data the analysis structure
  * @return the formatted string
  */
