@@ -12,7 +12,7 @@ import "sort"
  *  Creates an analysis structure for extracting intervals
  * @return a map relating the file name and the intervals in seconds
 */
-func BeginClock() map[string][]float64 {
+func BeginStopwatch() map[string][]float64 {
     return make(map[string][]float64)
 }
 
@@ -48,10 +48,10 @@ func ExtractIntervals(input string) []float64 {
  * Updates the analysis structure by relating the file name to its intervals
  * @param data the array of intervals
  * @param tag the file name
- * @param analysis the analysis structure, as given by BeginClock()
+ * @param analysis the analysis structure, as given by BeginStopwatch()
  * @return the updated analysis structure
  */
-func UpdateClock(analysis map[string][]float64,
+func UpdateStopwatch(analysis map[string][]float64,
                  tag string,
                  data []float64) map[string][]float64 {
     analysis[tag] = data
@@ -60,10 +60,10 @@ func UpdateClock(analysis map[string][]float64,
 
 /**
  * Turn the analysis structure into a CSV table
- * @param analysis the structure, as given by UpdateClock()
+ * @param analysis the structure, as given by UpdateStopwatch()
  * @return a string containing the CSV table ready to be written in a file
  */
-func FormatClock(analysis map[string][]float64) string {
+func FormatStopwatch(analysis map[string][]float64) string {
     outlet := ""
     howManyFiles := len(analysis)
     files := make([]string, howManyFiles)

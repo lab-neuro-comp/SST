@@ -44,23 +44,25 @@ func calculateData(source string) {
 func getLimits(source string) {
 	files, _ := ioutil.ReadDir(source)
 	outClock, _ := os.Create(source + "clock.csv")
-	outInt, _ := os.Create(source + "intervals.csv")
-	clockInfo := sst.BeginGlobalClock()
-	intervalsInfo := sst.BeginClock()
+	outInts, _ := os.Create(source + "intervals.csv")
+	timer := sst.BeginTimer()
+	stopwatch := sst.BeginStopwatch()
 	defer outClock.Close()
-	defer outInt.Close()
+	defer outInts.Close()
 
 	for _, file := range files {
 		if sst.ValidFile(file.Name()) {
 			where := source + file.Name()
-			xml := sst.ExtractGlobalClock(where)
+			// Clock information
+			xml := sst.ExtractTimer(where)
+			timer = sst.UpdateTimer(timer, file.Name(), xml)
+			// Intervals information
 			intervals := sst.ExtractIntervals(where)
-			clockInfo = sst.UpdateGlobalClock(clockInfo, file.Name(), xml)
-			intervalsInfo = sst.UpdateClock(intervalsInfo, file.Name(), intervals)
+			stopwatch = sst.UpdateStopwatch(stopwatch, file.Name(), intervals)
 		}
 	}
 
-	results := sst.MergeData(clockInfo, intervalsInfo)
-	sst.Write(outClock, sst.FormatGlobalClock(results))
-	sst.Write(outInt, sst.FormatClock(intervalsInfo))
+	results := sst.MergeData(timer, stopwatch)
+	sst.Write(outClock, sst.FormatTimer(results))
+	sst.Write(outInts, sst.FormatStopwatch(stopwatch))
 }

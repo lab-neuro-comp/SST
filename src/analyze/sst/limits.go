@@ -12,7 +12,7 @@ import "strings"
  * @return a map relating a string (the file) to the moment
  *         the test begins (a timestamp)
  */
-func BeginGlobalClock() map[string]string {
+func BeginTimer() map[string]string {
 	return make(map[string]string)
 }
 
@@ -22,13 +22,13 @@ func BeginGlobalClock() map[string]string {
  * @param input the file path
  * @return the mined timestamp
  */
-func ExtractGlobalClock(input string) string {
+func ExtractTimer(input string) string {
     inlet, _ := os.Open(input)
     // outlet := make([]float64, 0)
 
     // read variables
     defer inlet.Close()
-    header := ReadHeader(inlet, getGlobalClockTags())
+    header := ReadHeader(inlet, getTimerTags())
     records := ReadRecords(inlet, header)
 
     // further analysis
@@ -45,12 +45,12 @@ func ExtractGlobalClock(input string) string {
 
 /**
  * Updates the analysis struture, relating the file to its timestamp
- * @param analysis the analysis structure, as created by `BeginGlobalClock`
+ * @param analysis the analysis structure, as created by `BeginTimer`
  * @param input the file name
  * @param data the time stamp
  * @return the updated analysis structure
  */
-func UpdateGlobalClock(analysis map[string]string,
+func UpdateTimer(analysis map[string]string,
 	                   input, data string) map[string]string {
 	analysis[input] = data
 	return analysis
@@ -81,7 +81,7 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
  * @param data the result of a `MergeData` operation
  * @return a string containing the related TSV table
  */
-func FormatGlobalClock(data map[string][]int) string {
+func FormatTimer(data map[string][]int) string {
 	outlet := ""
 
 	for fileName, moments := range data {
@@ -115,7 +115,7 @@ func FindBorders(text, tag string) (int, int) {
 /*********************
 * AUXILIAR FUNCTIONS *
 *********************/
-func getGlobalClockTags() []string {
+func getTimerTags() []string {
     return []string {
         "Clock.Information",
     }
