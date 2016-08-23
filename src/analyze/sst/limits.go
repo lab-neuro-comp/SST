@@ -4,9 +4,8 @@ import "os"
 import "fmt"
 import "strings"
 
-/*****************
-* MAIN FUNCTIONS *
-*****************/
+/* MAIN FUNCTIONS
+   ============== */
 /**
  * Creates a clock limits structure
  * @return a map relating a string (the file) to the moment
@@ -30,7 +29,7 @@ func ExtractTimer(input string) string {
     header := ReadHeader(inlet, tags)
     records := ReadRecords(inlet, header)
 
-    // further analysis
+    // XML analysis
     xml := records["Clock.Information"][0]
     lower, upper := FindBorders(xml, "DateUtc")
 
@@ -56,6 +55,9 @@ func UpdateTimer(analysis map[string]string, input, data string) map[string]stri
 
 /**
  * Relates the timestamps information to the limits of the test intervals
+ * @param clockInfo information collected from timer
+ * @param intervalsInfo information collected from the stopwatch
+ * @return a map relating the beginning, the ending, the subject and the session for each file
  */
 func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) map[string][]int {
 	outlet := make(map[string][]int)
@@ -63,7 +65,6 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
 
 	for fileName, raw := range clockInfo {
 		data := Split(raw, '#')
-		fmt.Printf("%s %v\n", fileName, data)
 		beginning := data[0]
 		subject := ParseInt(data[1])
 		session := ParseInt(data[2])
@@ -85,7 +86,7 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
  * @return a string containing the related TSV table
  */
 func FormatTimer(data map[string][]int) string {
-	outlet := "Arquivo\tStart\tEnd\tSubject\tSession\n"
+	outlet := "File\tStart\tEnd\tSubject\tSession\n"
 
 	for fileName, moments := range data {
 		outlet = fmt.Sprintf("%s%s\t%s\t%s\t%v\t%v\n", 
@@ -100,9 +101,8 @@ func FormatTimer(data map[string][]int) string {
 	return outlet
 }
 
-/****************
-* XML FUNCTIONS *
-****************/
+/* XML FUNCTIONS
+   ============= */
 func FindBorders(text, tag string) (int, int) {
 	lower := strings.Index(text, tag)
 	for text[lower]	!= '>' {
@@ -118,9 +118,8 @@ func FindBorders(text, tag string) (int, int) {
 	return lower, upper
 }
 
-/*********************
-* AUXILIAR FUNCTIONS *
-*********************/
+/* AUXILIAR FUNCTIONS
+   ================== */
 func getTimerTags() []string {
     return []string {
         "Clock.Information",
