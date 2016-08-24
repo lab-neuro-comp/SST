@@ -34,9 +34,9 @@ func ExtractTimer(input string) string {
     lower, upper := FindBorders(xml, "DateUtc")
 
     // Packing data
-    outlet := fmt.Sprintf("%s#%s#%s", 
-    	                  xml[lower:upper], 
-    	                  records["Subject"][0], 
+    outlet := fmt.Sprintf("%s#%s#%s",
+    	                  xml[lower:upper],
+    	                  records["Subject"][0],
     	                  records["Session"][0])
     return outlet
 }
@@ -89,8 +89,8 @@ func FormatTimer(data map[string][]int) string {
 	outlet := "File\tStart\tEnd\tSubject\tSession\n"
 
 	for fileName, moments := range data {
-		outlet = fmt.Sprintf("%s%s\t%s\t%s\t%v\t%v\n", 
-			                 outlet, 
+		outlet = fmt.Sprintf("%s%s\t%s\t%s\t%v\t%v\n",
+			                 outlet,
 			                 fileName,
 			                 ConvertToTimeStamp(moments[0]),
 			                 ConvertToTimeStamp(moments[1]),

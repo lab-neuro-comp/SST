@@ -52,8 +52,8 @@ func ExtractIntervals(input string) []float64 {
  * @return the updated analysis structure
  */
 func UpdateStopwatch(analysis map[string][]float64,
-                 tag string,
-                 data []float64) map[string][]float64 {
+                     tag string,
+                     data []float64) map[string][]float64 {
     analysis[tag] = data
     return analysis
 }
@@ -65,28 +65,17 @@ func UpdateStopwatch(analysis map[string][]float64,
  */
 func FormatStopwatch(analysis map[string][]float64) string {
     outlet := ""
-    howManyFiles := len(analysis)
-    files := make([]string, howManyFiles)
 
-    // set files
-    i := 0
-    for key, _ := range analysis {
-        files[i] = key
-        outlet = fmt.Sprintf("%s%s\t", outlet, files[i])
-        i++
-    }
-
-    // write durations
-    limit := len(analysis[files[0]])
-    for j := 0; j < limit; j++ {
-        line := ""
-        for i = 0; i < howManyFiles; i++ {
-            line = fmt.Sprintf("%s%.3f\t", line, analysis[files[i]][j] / 1000)
+    for file, events := range analysis {
+        line := file
+        // TODO Add subject and session data to line
+        for _, event := range events {
+            line += replaceInString(fmt.Sprintf("\t%.3f", event / 1000), '.', ',')
         }
-        outlet = fmt.Sprintf("%s\n%s", outlet, line)
+        outlet += line + "\n"
     }
 
-    return fmt.Sprintf("%s\n", outlet)
+    return outlet
 }
 
 /*********************
