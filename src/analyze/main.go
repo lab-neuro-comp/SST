@@ -3,26 +3,35 @@ package main
 import "fmt"
 import "os"
 import "io/ioutil"
+import "sync"
 import "./sst"
 
 func main() {
-	source := "."
+	var wg sync.WaitGroup
+	var source string
+
 	if len(os.Args) > 1 {
 		source = os.Args[1]
+	} else {
+		source = "."
 	}
+
 	source += "/"
-	calculateData(source)
-	getLimits(source)
+	wg.Add(2)
+	go calculateData(source, &wg)
+	go getLimits(source, &wg)
+	wg.Wait()
 }
 
 /**
  * Studies the score obtained by that file set
  * @param source the source folder path
  */
-func calculateData(source string) {
+func calculateData(source string, wg *sync.WaitGroup) {
 	files, _ := ioutil.ReadDir(source)
 	outlet, _ := os.Create(source + "sst.csv")
 	analysis := sst.BeginAnalysis()
+	defer wg.Done()
 	defer outlet.Close()
 
 	sst.Write(outlet, sst.BeginCSV())
@@ -41,13 +50,14 @@ func calculateData(source string) {
  * Analyzes the time performance of a data set
  * @param source the source folder path
  */
-func getLimits(source string) {
+func getLimits(source string, wg *sync.WaitGroup) {
 	files, _ := ioutil.ReadDir(source)
 	outClock, _ := os.Create(source + "clock.csv")
 	outInts, _ := os.Create(source + "intervals.csv")
 	timer := sst.BeginTimer()
 	stopwatch := sst.BeginStopwatch()
 	ids := make(map[string]string)
+	defer wg.Done()
 	defer outClock.Close()
 	defer outInts.Close()
 
