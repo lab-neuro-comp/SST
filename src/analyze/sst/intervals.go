@@ -63,12 +63,11 @@ func UpdateStopwatch(analysis map[string][]float64,
  * @param analysis the structure, as given by UpdateStopwatch()
  * @return a string containing the CSV table ready to be written in a file
  */
-func FormatStopwatch(analysis map[string][]float64) string {
-    outlet := ""
+func FormatStopwatch(analysis map[string][]float64, ids map[string]string) string {
+    outlet := "File\tSubject\tSession\tEvents\n"
 
     for file, events := range analysis {
-        line := file
-        // TODO Add subject and session data to line
+        line := fmt.Sprintf("%s\t%s", file, ids[file])
         for _, event := range events {
             line += replaceInString(fmt.Sprintf("\t%.3f", event / 1000), '.', ',')
         }

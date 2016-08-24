@@ -47,6 +47,7 @@ func getLimits(source string) {
 	outInts, _ := os.Create(source + "intervals.csv")
 	timer := sst.BeginTimer()
 	stopwatch := sst.BeginStopwatch()
+	ids := make(map[string]string)
 	defer outClock.Close()
 	defer outInts.Close()
 
@@ -56,6 +57,7 @@ func getLimits(source string) {
 			// Clock information
 			data := sst.ExtractTimer(where)
 			timer = sst.UpdateTimer(timer, file.Name(), data)
+			ids[file.Name()] = sst.GetId(data)
 			// Intervals information
 			intervals := sst.ExtractIntervals(where)
 			stopwatch = sst.UpdateStopwatch(stopwatch, file.Name(), intervals)
@@ -64,5 +66,5 @@ func getLimits(source string) {
 
 	results := sst.MergeData(timer, stopwatch)
 	sst.Write(outClock, sst.FormatTimer(results))
-	sst.Write(outInts, sst.FormatStopwatch(stopwatch))
+	sst.Write(outInts, sst.FormatStopwatch(stopwatch, ids))
 }

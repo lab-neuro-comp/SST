@@ -128,6 +128,12 @@ func getTimerTags() []string {
     }
 }
 
+func GetId(raw string) string {
+	data := Split(raw, '#')
+	outlet := fmt.Sprintf("%s\t%s", data[1], data[2])
+	return outlet
+}
+
 /* FINAL CONSIDERATIONS */
 
 /*
