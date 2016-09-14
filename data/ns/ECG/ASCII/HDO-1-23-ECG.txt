@@ -1,0 +1,9 @@
+"FileName:C:\Pesquisadores\TreinoCognitivo\EEG\edf\HDO-1-23.edf"
+"Patient:XXX M 15-SEP-1946 HDO"
+"Recording:Neuron-Spectrum, Copyright Neurosoft"
+"StartTime:24.jun.2016 11.11.07"
+"StopTime:24.jun.2016 11.28.03"
+"SignalNumber:22"
+"SignalLabel:ECG"
+"SampleFrequency:200Hz"
+"Physical value uV = (ASCII+32768)*0,200808728160525-6580

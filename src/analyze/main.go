@@ -15,8 +15,8 @@ func main() {
 	} else {
 		source = "."
 	}
-
 	source += "/"
+
 	wg.Add(2)
 	go calculateData(source, &wg)
 	go getLimits(source, &wg)
@@ -39,8 +39,7 @@ func calculateData(source string, wg *sync.WaitGroup) {
 		if sst.ValidFile(file.Name()) {
 			data := sst.AnalyzeSingle(sst.Read(source + file.Name()))
 			analysis = sst.UpdateAnalysis(data, analysis)
-			sst.Write(outlet, fmt.Sprintf("%s%s\n", file.Name(),
-				                                    sst.FormatSingleCSV(data)))
+			sst.Write(outlet, fmt.Sprintf("%s%s\n", file.Name() sst.FormatSingleCSV(data)))
 		}
 	}
 	sst.Write(outlet, sst.FormatMultipleCSV(analysis))

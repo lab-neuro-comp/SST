@@ -1,0 +1,11 @@
+[ALLEEG EEG CURRENTSET ALLCOM] = eeglab;
+EEG = pop_biosig('C:\Pesquisadores\TreinoCognitivo\EEG\edf\DSN-16-1.edf', 'blockrange',[855 1035] );
+[ALLEEG EEG CURRENTSET] = pop_newset(ALLEEG, EEG, 0,'setname','DSN-16-1-LB2','gui','off'); 
+EEG = eeg_checkset( EEG );
+EEG = pop_reref( EEG, 24);
+[ALLEEG EEG CURRENTSET] = pop_newset(ALLEEG, EEG, 1,'savenew','C:\\Pesquisadores\\TreinoCognitivo\\EEG\\tratados\\DSN-16-1-LB2.set','overwrite','on','gui','off'); 
+EEG=pop_chanedit(EEG, 'lookup','C:\\Program Files\\EEGLab\\eeglab10_2_5_8b\\plugins\\dipfit2.2\\standard_BESA\\standard-10-5-cap385.elp','load',{'C:\\Programas\\locs21UP.ced' 'filetype' 'autodetect'});
+[ALLEEG EEG] = eeg_store(ALLEEG, EEG, CURRENTSET);
+EEG = eeg_checkset( EEG );
+EEG = pop_runica(EEG, 'extended',1,'interupt','on');
+[ALLEEG EEG] = eeg_store(ALLEEG, EEG, CURRENTSET);

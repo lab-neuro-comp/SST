@@ -1,4 +1,4 @@
-"FileName:C:\Users\Carlos\Desktop\TREINOCOGNITIVO\Resultados\TPP\TPP-3-23.edf"
+"FileName:C:\Pesquisadores\TreinoCognitivo\EEG\edf\TPP-3-23.edf"
 "Patient:XXX F 03-MAR-1940 TPP"
 "Recording:Neuron-Spectrum, Copyright Neurosoft"
 "StartTime:12.jul.2016 17.12.20"
