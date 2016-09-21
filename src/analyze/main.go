@@ -4,7 +4,7 @@ import "fmt"
 import "os"
 import "io/ioutil"
 import "sync"
-import "./sst"
+import "github.com/ishiikurisu/sst"
 
 func main() {
 	var wg sync.WaitGroup
