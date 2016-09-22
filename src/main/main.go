@@ -2,9 +2,9 @@ package main
 
 import "fmt"
 import "os"
-import "io/ioutil"
 import "sync"
-import "github.com/ishiikurisu/sst"
+import "io/ioutil"
+import "github.com/lab-neuro-comp/SST/src/sst"
 
 func main() {
 	var wg sync.WaitGroup
@@ -39,7 +39,10 @@ func calculateData(source string, wg *sync.WaitGroup) {
 		if sst.ValidFile(file.Name()) {
 			data := sst.AnalyzeSingle(sst.Read(source + file.Name()))
 			analysis = sst.UpdateAnalysis(data, analysis)
-			sst.Write(outlet, fmt.Sprintf("%s%s\n", file.Name(), sst.FormatSingleCSV(data)))
+			sst.Write(outlet, 
+				      fmt.Sprintf("%s%s\n", 
+				      	          file.Name(), 
+				      	          sst.FormatSingleCSV(data)))
 		}
 	}
 	sst.Write(outlet, sst.FormatMultipleCSV(analysis))
