@@ -86,10 +86,10 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
  * @return a string containing the related TSV table
  */
 func FormatTimer(data map[string][]int) string {
-	outlet := "File\tStart\tEnd\tSubject\tSession\n"
+	outlet := "File;Start;End;Subject;Session\n"
 
 	for fileName, moments := range data {
-		outlet = fmt.Sprintf("%s%s\t%s\t%s\t%v\t%v\n",
+		outlet = fmt.Sprintf("%s%s;%s;%s;%v;%v\n",
 			                 outlet,
 			                 fileName,
 			                 ConvertToTimeStamp(moments[0]),
@@ -130,7 +130,7 @@ func getTimerTags() []string {
 
 func GetId(raw string) string {
 	data := Split(raw, '#')
-	outlet := fmt.Sprintf("%s\t%s", data[1], data[2])
+	outlet := fmt.Sprintf("%s;%s", data[1], data[2])
 	return outlet
 }
 

@@ -130,7 +130,7 @@ func BeginCSV() string {
 	box := "File name"
 
 	for _, it := range GetAnalysisParameters() {
-		box += fmt.Sprintf("\t%s", it)
+		box += fmt.Sprintf(";%s", it)
 	}
 
 	return box + "\n"
@@ -145,7 +145,7 @@ func BeginCSV() string {
  */
 func FormatSingleCSV(data map[string]float64) (box string) {
 	for _, param := range GetAnalysisParameters() {
-		box += replaceInString(fmt.Sprintf("\t%3f", data[param]), '.', ',')
+		box += replaceInString(fmt.Sprintf(";%3f", data[param]), '.', ',')
 	}
 	return
 }
@@ -162,7 +162,7 @@ func FormatMultipleCSV(analysis map[string][]float64) string {
 	for _, param := range GetAnalysisParameters() {
 		mean := Mean(analysis[param])
 		dev := StdDev(analysis[param])
-		outlet += replaceInString(fmt.Sprintf("\t%3f +- %3f", mean, dev), '.', ',')
+		outlet += replaceInString(fmt.Sprintf(";%3f +- %3f", mean, dev), '.', ',')
 	}
 
 	return fmt.Sprintf("%s\n", outlet)
