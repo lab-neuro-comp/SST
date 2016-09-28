@@ -9,9 +9,9 @@ import "sort"
 ******************/
 
 /**
- *  Creates an analysis structure for extracting intervals
+ * Creates an analysis structure for extracting intervals
  * @return a map relating the file name and the intervals in seconds
-*/
+ */
 func BeginStopwatch() map[string][]float64 {
     return make(map[string][]float64)
 }
