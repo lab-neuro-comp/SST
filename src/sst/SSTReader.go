@@ -2,11 +2,10 @@ package sst
 
 import "os"
 
-/**
- * Reads the choosen file and translates it into a collection of arrays
- * @param input the name of the input file
- * @return a map relating the needed information and the chosen fields
- */
+// Reads the choosen file and translates it into a collection of arrays. It
+// needs the name of the input file, and creates a map relating the needed
+// information, as described in the `GetNeededVariables()` function; and the
+// chosen fields.
 func Read(input string) map[string][]string {
 	inlet, _ := os.Open(input)
     defer inlet.Close()
@@ -15,11 +14,7 @@ func Read(input string) map[string][]string {
 	return outlet
 }
 
-/**
- * Gets the indexes of the needed fields from the header
- * @param inlet the pointer to the specified file
- * @return a map relating the indexes and the fields
- */
+// Gets the indexes of the needed fields from the header.
 func ReadHeader(inlet *os.File, needed []string) map[string]int {
 	ReadLine(inlet)
 	header := make(map[string]int)
@@ -34,12 +29,9 @@ func ReadHeader(inlet *os.File, needed []string) map[string]int {
 	return header
 }
 
-/**
- * Read the records into arrays of contigous information
- * @param inlet the pointer to the file we're reading
- * @param header a map relating the indexes to the needed fields
- * @return a map relating the needed fields and the arrays of contained information
- */
+// Read the records into arrays of contigous information. Requires the pointer
+// to the file that is being read; and the map created on the `ReadHeader()`
+// function, relating the indexes and the needed fields.
 func ReadRecords(inlet *os.File, header map[string]int) map[string][]string {
 	outlet := make(map[string][]string)
 

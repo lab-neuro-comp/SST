@@ -1,8 +1,6 @@
 package sst
 
-/**
- * Creates a slice containing the needed variables for analysis
- */
+// Creates a slice containing the needed variables for analysis.
 func GetNeededVariables() []string {
 	return []string {
 		"PressStimulus.RT",
@@ -16,9 +14,7 @@ func GetNeededVariables() []string {
 	}
 }
 
-/**
- * Creates a map to be used on single and multiple file analysis
- */
+// Creates a map to be used on single and multiple file analysis.
 func CreateAnalysisMap() map[string]float64 {
 	result := make(map[string]float64)
 
@@ -38,11 +34,9 @@ func CreateAnalysisMap() map[string]float64 {
 	return result
 }
 
-/**
- * Performs a study process on one SST data set
- * @param data a map relating the needed fields to arrays of the collected data
- * @return a map relating the desided measures with their respective calculations
- */
+// Performs a study process on one SST data set, by using a map relating the
+// needed fields to arrays of the collected data. Returns a map relating the
+// desided measures with their respective calculations.
 func AnalyzeSingle(data map[string][]string) map[string]float64 {
 	result := CreateAnalysisMap()
 	limit := len(data["Procedure[Trial]"])
@@ -51,9 +45,9 @@ func AnalyzeSingle(data map[string][]string) map[string]float64 {
 	for i := 0; i < limit; i++ {
 		switch data["Procedure[Trial]"][i] {
 		case "PressProc":
-			result = StudyPressProc(i, data, result)
+			result = studyPressProc(i, data, result)
 		case "NotPressProc":
-			result = StudyNotPressProc(i, data, result)
+			result = studyNotPressProc(i, data, result)
 		}
 	}
 
@@ -73,7 +67,7 @@ func AnalyzeSingle(data map[string][]string) map[string]float64 {
 	return result
 }
 
-func StudyPressProc(where int,
+func studyPressProc(where int,
 	                data map[string][]string,
 					stuff map[string]float64) map[string]float64 {
 	reactionTime := ParseFloat64(data["PressStimulus.RT"][where])
@@ -86,7 +80,7 @@ func StudyPressProc(where int,
 	return stuff
 }
 
-func StudyNotPressProc(where int,
+func studyNotPressProc(where int,
 	                   data map[string][]string,
 					   stuff map[string]float64) map[string]float64 {
 	reactionTime := ParseFloat64(data["VisualStimulus.Duration"][where])

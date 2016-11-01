@@ -27,6 +27,7 @@ func replaceInString(inlet string, old, now rune) string  {
 	return outlet
 }
 
+// Reads a whole line from the file in pointer.
 func ReadLine(inlet *os.File) string {
 	stuff := ""
 
@@ -37,6 +38,7 @@ func ReadLine(inlet *os.File) string {
 	return stuff
 }
 
+// Reads a single char from the file pointer.
 func ReadChar(inlet *os.File) byte {
 	data := make([]byte, 2)
 	_, shit := inlet.Read(data)
@@ -48,6 +50,7 @@ func ReadChar(inlet *os.File) byte {
 	}
 }
 
+// Splits a string, dividing them based upon a char.
 func Split(inlet string, separator byte) []string {
 	var outlet []string
 	division := ""
@@ -68,6 +71,7 @@ func Split(inlet string, separator byte) []string {
 	return outlet
 }
 
+// Checks if there is a string inside an string array.
 func Contains(haystack []string, needle string) bool {
 	for _, hay := range haystack {
 		if hay == needle {
@@ -78,6 +82,8 @@ func Contains(haystack []string, needle string) bool {
 	return false
 }
 
+
+// Turns a string into a float64
 func ParseFloat64(inlet string) float64 {
 	outlet, shit := strconv.ParseFloat(inlet, 64)
 	if shit == nil {
@@ -87,6 +93,7 @@ func ParseFloat64(inlet string) float64 {
 	}
 }
 
+// Turns a string into an integer.
 func ParseInt(inlet string) int {
 	outlet, shit := strconv.Atoi(inlet)
 	if shit == nil {
@@ -96,10 +103,12 @@ func ParseInt(inlet string) int {
 	}
 }
 
+// Provides the most simplistic interface to the standard output.
 func Debug(x interface{}) {
 	fmt.Println(x)
 }
 
+// Checks if a file has a valid format, according the test's specification.
 func ValidFile(inlet string) bool {
 	isTxt := true
 	isCsv := false
@@ -122,6 +131,8 @@ func ValidFile(inlet string) bool {
 // MATHEMATICS //
 /////////////////
 
+// Provides a simple sigma operator, analogous to the mathematical sigma
+// operator.
 func Sigma(inlet []float64, op func(float64)float64) float64 {
 	var outlet float64 = 0.0
 	for _, it := range inlet {
@@ -130,12 +141,14 @@ func Sigma(inlet []float64, op func(float64)float64) float64 {
 	return outlet
 }
 
+// Calculates the mean of am array of floats.
 func Mean(inlet []float64) float64 {
 	return Sigma(inlet, func(it float64) float64 {
 		return it
 	}) / float64(len(inlet))
 }
 
+// Calculates the variance of am array of floats.
 func Variance(inlet []float64) float64 {
 	mean := Mean(inlet)
 	return Sigma(inlet, func(it float64) float64 {
@@ -143,6 +156,7 @@ func Variance(inlet []float64) float64 {
 	}) / float64(len(inlet))
 }
 
+// Calculates the standard deviation of am array of floats.
 func StdDev(inlet []float64) float64 {
 	return math.Sqrt(Variance(inlet))
 }

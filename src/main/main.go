@@ -6,6 +6,8 @@ import "sync"
 import "io/ioutil"
 import "github.com/lab-neuro-comp/SST/src/sst"
 
+// This is the main application to be used to process the generated data from
+// the Stop Signal Test implemented on E-Prime.
 func main() {
 	var wg sync.WaitGroup
 	var source string
@@ -39,9 +41,9 @@ func calculateData(source string, wg *sync.WaitGroup) {
 		if sst.ValidFile(file.Name()) {
 			data := sst.AnalyzeSingle(sst.Read(source + file.Name()))
 			analysis = sst.UpdateAnalysis(data, analysis)
-			sst.Write(outlet, 
-				      fmt.Sprintf("%s%s\n", 
-				      	          file.Name(), 
+			sst.Write(outlet,
+				      fmt.Sprintf("%s%s\n",
+				      	          file.Name(),
 				      	          sst.FormatSingleCSV(data)))
 		}
 	}
