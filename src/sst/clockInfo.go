@@ -8,14 +8,18 @@ import "strconv"
 /*****************
 * MAIN FUNCTIONS *
 *****************/
+
+// Converts a timestamp to an unix time integer. Example of timestamp:
+// 2015-09-18T15:22:21Z
 func ConvertToUnixTime(timestamp string) int {
-    // Example of timestamp: 2015-09-18T15:22:21Z
     year, month, day := getDate(timestamp)
     hour, min, sec := getHour(timestamp)
     moment := time.Date(year, month, day, hour, min, sec, 0, time.Local)
     return int(moment.Unix())
 }
 
+// Converts an unix time integer to a timestamp. Example of timestamp:
+// 2015-09-18T15:22:21Z
 func ConvertToTimeStamp(unixtime int) string {
     moment := time.Unix(int64(unixtime), 0)
     parts := strings.Split(moment.String(), " ")

@@ -6,20 +6,14 @@ import "strings"
 
 /* MAIN FUNCTIONS
    ============== */
-/**
- * Creates a clock limits structure
- * @return a map relating a string (the file) to the moment
- *         the test begins (a timestamp)
- */
+
+// Creates a clock limits structure, returning a map relating a string (the
+// file) to the moment the test begins (a timestamp).
 func BeginTimer() map[string]string {
 	return make(map[string]string)
 }
 
-/**
- * Extracts the XML part of the table and mines the information in the time tag'
- * @param input the file path
- * @return the mined timestamp
- */
+// Extracts the XML part of the table and mines the information in the time tag.
 func ExtractTimer(input string) string {
     inlet, _ := os.Open(input)
     tags := getTimerTags()
@@ -41,24 +35,15 @@ func ExtractTimer(input string) string {
     return outlet
 }
 
-/**
- * Updates the analysis struture, relating the file to its timestamp
- * @param analysis the analysis structure, as created by `BeginTimer`
- * @param input the file name
- * @param data the time stamp
- * @return the updated analysis structure
- */
+// Updates the analysis struture, relating the file to its timestamp.
 func UpdateTimer(analysis map[string]string, input, data string) map[string]string {
 	analysis[input] = data
 	return analysis
 }
 
-/**
- * Relates the timestamps information to the limits of the test intervals
- * @param clockInfo information collected from timer
- * @param intervalsInfo information collected from the stopwatch
- * @return a map relating the beginning, the ending, the subject and the session for each file
- */
+// Relates the timestamps information to the limits of the test intervals by
+//  relating the beginning, the ending, the subject and the session for each
+// file
 func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) map[string][]int {
 	outlet := make(map[string][]int)
 	threeHours := 3 * 60 * 60
@@ -80,11 +65,7 @@ func MergeData(clockInfo map[string]string, intervalsInfo map[string][]float64) 
 	return outlet
 }
 
-/**
- * Turns the clock data structure into a comprehensive TSV table
- * @param data the result of a `MergeData` operation
- * @return a string containing the related TSV table
- */
+// Turns the clock data structure into a comprehensive CSV table.
 func FormatTimer(data map[string][]int) string {
 	outlet := "File;Start;End;Subject;Session\n"
 
@@ -103,6 +84,8 @@ func FormatTimer(data map[string][]int) string {
 
 /* XML FUNCTIONS
    ============= */
+
+// Find the borders of a tag whithin XML text.
 func FindBorders(text, tag string) (int, int) {
 	lower := strings.Index(text, tag)
 	for text[lower]	!= '>' {

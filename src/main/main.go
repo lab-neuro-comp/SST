@@ -25,10 +25,8 @@ func main() {
 	wg.Wait()
 }
 
-/**
- * Studies the score obtained by that file set
- * @param source the source folder path
- */
+// Studies the score obtained by that file set on the source folder. It is made
+// to be executed on parallel, as defined by the determined wait group.
 func calculateData(source string, wg *sync.WaitGroup) {
 	files, _ := ioutil.ReadDir(source)
 	outlet, _ := os.Create(source + "sst.csv")
@@ -50,10 +48,8 @@ func calculateData(source string, wg *sync.WaitGroup) {
 	sst.Write(outlet, sst.FormatMultipleCSV(analysis))
 }
 
-/**
- * Analyzes the time performance of a data set
- * @param source the source folder path
- */
+// Analyzes the time performance of a data set. It is made to be executed on
+// parallel, as defined by the determined wait group.
 func getLimits(source string, wg *sync.WaitGroup) {
 	files, _ := ioutil.ReadDir(source)
 	outClock, _ := os.Create(source + "clock.csv")
