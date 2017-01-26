@@ -13,7 +13,7 @@ func min(a, b int) int {
 	}
 }
 
-func replaceInString(inlet string, old, now rune) string  {
+func ReplaceInString(inlet string, old, now rune) string  {
 	outlet := ""
 
 	for _, letter := range inlet {

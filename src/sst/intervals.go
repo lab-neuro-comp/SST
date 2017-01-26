@@ -53,7 +53,7 @@ func FormatStopwatch(analysis map[string][]float64, ids map[string]string) strin
     for file, events := range analysis {
         line := fmt.Sprintf("%s;%s", file, ids[file])
         for _, event := range events {
-            line += replaceInString(fmt.Sprintf(";%.3f", event / 1000), '.', ',')
+            line += ReplaceInString(fmt.Sprintf(";%.3f", event / 1000), '.', ',')
         }
         outlet += line + "\n"
     }
