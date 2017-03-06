@@ -1,9 +1,0 @@
-"FileName:C:\Pesquisadores\TreinoCognitivo\EEG\edf\MLSGB-5-23.edf"
-"Patient:XXX F 18-MAY-1948 MLSGB"
-"Recording:Neuron-Spectrum, Copyright Neurosoft"
-"StartTime:19.jul.2016 11.03.51"
-"StopTime:19.jul.2016 11.19.20"
-"SignalNumber:22"
-"SignalLabel:ECG"
-"SampleFrequency:200Hz"
-"Physical value uV = (ASCII+32768)*0,200808728160525-6580

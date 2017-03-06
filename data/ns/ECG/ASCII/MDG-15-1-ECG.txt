@@ -1,9 +1,0 @@
-"FileName:C:\Pesquisadores\TreinoCognitivo\EEG\edf\MDG-15-1.edf"
-"Patient:XXX F 24-JAN-1943 MDG"
-"Recording:Neuron-Spectrum, Copyright Neurosoft"
-"StartTime:05.jul.2016 16.13.50"
-"StopTime:05.jul.2016 16.33.18"
-"SignalNumber:22"
-"SignalLabel:ECG"
-"SampleFrequency:200Hz"
-"Physical value uV = (ASCII+32768)*0,200808728160525-6580

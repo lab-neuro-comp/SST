@@ -1,9 +1,0 @@
-"FileName:C:\Pesquisadores\TreinoCognitivo\EEG\edf\MRS-13-1.edf"
-"Patient:XXX F 01-JAN-1970 MRS"
-"Recording:Neuron-Spectrum, Copyright Neurosoft"
-"StartTime:22.jun.2016 09.59.50"
-"StopTime:22.jun.2016 10.18.23"
-"SignalNumber:22"
-"SignalLabel:ECG"
-"SampleFrequency:200Hz"
-"Physical value uV = (ASCII+32768)*0,200808728160525-6580
